@@ -146,14 +146,17 @@ pkgSnapshotFile <- file.path(projPaths$pkgPath, "pkgSnapshot.txt")
 #   libPaths = projPaths$pkgPath, standAlone = TRUE
 # )
 ## and replace the above Require() call with
-Require(packageVersionFile = pkgSnapshotFile, libPaths = projPaths$pkgPath)
+Require(packageVersionFile = pkgSnapshotFile, 
+        standAlone = TRUE,
+        libPaths = projPaths$pkgPath,
+        upgrade = FALSE, require = FALSE)
 Require(c("data.table", "dismo",
           "ggplot2", "httr", "maps",
           "randomForest",
           "rasterVis", "reproducible",
           "terra"),
         install = FALSE)
-
+```
 
 ## setup
 source(file.path(projPaths$codePath, "miscFuns.R"))
