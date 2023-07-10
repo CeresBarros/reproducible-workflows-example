@@ -120,9 +120,10 @@ of minimum package versions (see `?Require`)
 
 ```{r installPkgs}
 ## install specific versions of packages
-if (packageVersion("Require") < "0.3.0") {
-  packageURL <- "https://cran.r-project.org/src/contrib/Archive/Require/Require_0.3.0.tar.gz"
-  install.packages(packageURL, repos=NULL, type="source", dependencies = TRUE)
+installRequire <- !"Require" %in% rownames(installed.packages())
+installRequire <- if (!installRequire) packageVersion("Require") < "0.3.0" else installRequire
+if (installRequire) {
+  install.packages("Require", dependencies = TRUE)
 }
 
 library(Require)
