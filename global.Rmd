@@ -131,12 +131,12 @@ library(Require)
 ## Notes for Windows users: failure occurs often because the OS can "hold" on to folders.
 ##    Don't despair. Restart R session, close all other sessions and run the script up to
 ##    this point again.
-loadOut <- Require(c("data.table", "dismo",
-                     "ggplot2", "httr", "maps",
-                     "randomForest",
-                     "rasterVis", "reproducible", 
-                     "terra"),
-                   standAlone = TRUE)
+# loadOut <- Require(c("data.table", "dismo",
+#                      "ggplot2", "httr", "maps",
+#                      "randomForest",
+#                      "rasterVis", "reproducible", 
+#                      "terra"),
+#                    standAlone = TRUE)
 
 ## eventually we would save the library state in a package snapshot file
 # pkgSnapshotFile <- file.path(projPaths$pkgPath, "pkgSnapshot.txt")
@@ -145,7 +145,7 @@ loadOut <- Require(c("data.table", "dismo",
 #   libPaths = projPaths$pkgPath, standAlone = TRUE
 # )
 ## and replace the above Require() call with
-# Require(packageVersionFile = pkgSnapshotFile, libPaths = projPaths$pkgPath)
+Require(packageVersionFile = pkgSnapshotFile, libPaths = projPaths$pkgPath)
 
 ## setup
 source(file.path(projPaths$codePath, "miscFuns.R"))
