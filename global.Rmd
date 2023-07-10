@@ -3,6 +3,8 @@ title: "Untitled"
 author: "Ceres Barros"
 date: "2023-07-09"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
