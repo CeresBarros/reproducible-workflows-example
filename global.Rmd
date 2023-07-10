@@ -158,6 +158,7 @@ Require(c("data.table", "dismo",
         install = FALSE)
 ```
 
+```{r workflow}
 ## setup
 source(file.path(projPaths$codePath, "miscFuns.R"))
 source(file.path(projPaths$codePath, "setup.R"))
