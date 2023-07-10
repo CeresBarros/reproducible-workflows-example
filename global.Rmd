@@ -1,0 +1,163 @@
+---
+title: "Untitled"
+author: "Ceres Barros"
+date: "2023-07-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = getwd())
+knitr::opts_chunk$set(echo = TRUE, cache = 2)
+```
+
+## Introduction
+
+Repeatable, Reproducible, Reusable and Transparent ($R^3$T) workflows are becoming
+more and more commonly used in academic and non-academic setting to ensure that 
+analyses and their outputs can be verified and repeated by peers, stakeholders and
+even the public. As such, ($R^3$T) promote trust within the scientific community, and
+between scientists, stakeholders, end-users and the public. $R^3$T are also fundamental
+for model benchmarking, conducting meta-analyses and greatly facilitate building-on and 
+improving current scientific methods, especially those involving statistical and non-statistical
+modelling. 
+
+In the ecological domain $R^3$T are gaining traction, but many of us struggle 
+at the start, not knowing where to begin. The present example will take you through
+the analytical component (i.e. all steps from data preparation to making figures) 
+of a very common analysis in ecology - species distribution modelling. 
+
+The workflow has been kept as simple as possible, while following a few common guidelines
+that facilitate building $R^3$T workflows:
+1. Scripting
+2. Minimising no. software/languages used
+3. Modularising & "functionising"
+4. Centralising the workflow in a single script
+5. Using a self-contained & project-oriented workflow
+6. Using version control
+7. Using integrated testing.
+
+It also relies on two important packages that enable reproducibility and speed up
+subsequent runs (i.e. re-runs) the the workflow in the same machine:
+
+- [`Require`](https://require.predictiveecology.org/) - for self-contained and 
+reproducible `R` package installation;
+
+- [`reproducible`](https://reproducible.predictiveecology.org/) - for caching,
+data sourcing, common GIS operations, and more.
+
+However, please note that there are numerous other `R` packages (as well as other
+languages types of software) that facilitate and support $R^3$T workflows in `R`.
+This is simply an example using some of the tools that I use myself when building
+my workflows.
+
+## The workflow at a glance
+
+This example workflow is centred on projecting climate-driven range changes of white
+spruce (*Picea glauca*), a common tree species in Canada. I focused on the province of
+British Columbia and, for simplicity sake, only considered the effects of four bioclimatic 
+predictors (obtained from [WorldClim](https://www.worldclim.org/data/bioclim.html)).
+- BIO1 - Annual Mean Temperature
+- BIO4 - Temperature Seasonality
+- BIO12 - Annual Precipitation
+- BIO15 - Precipitation Seasonality
+
+In this workflow, I use a single random forest model (`randomForest` R package) to 
+model white spruce range changes as a function of the four bioclimatic variables.
+
+All steps from sourcing and formatting the data, to evaluating and plotting model
+results, are integrated in the workflow as a sequence of sourced scripts. This method
+was chosen as it is likely closer to the way most of us learn of to use `R`. However,
+other approaches could also be used, for instance:
+
+- converting existing scripts to single or multiple functions called from the
+controller script (`global.Rmd`);
+- adapting scripts to `SpaDES`(see the [SpaDES4Dummies guide](https://ceresbarros.github.io/SpaDES4Dummies/index.html)) modules and using `SpaDES` to execute the workflow;
+- Using `targets` to execute the workflow;
+- and more...
+
+## The workflow step by step
+
+### Setup
+
+A workflow should start with the initial set-up necessary to execute all operations.
+In `R` this mostly concerns R version, setting up project directories and 
+package installation and loading. Other examples are `options()` or any
+necessary system variables (not used here).
+
+Note that in self-contained workflows all packages should be installed at the 
+*project level* to avoid conflicts (or changing) the system and/or user R library.
+
+```{r assertionR}
+## an assertion:
+if (getRversion() < "4.3") {
+  warning(paste("This workflow was build using R v4.3.0;",
+                "it is recommended you update your R version to v4.3.0 or above"))
+}
+```
+
+
+```{r setupDirs}
+## package installation with Require
+
+## create project folder structure
+projPaths <- list("pkgPath" = file.path("packages", version$platform,
+                                        paste0(version$major, ".", strsplit(version$minor, "[.]")[[1]][1])),
+                  "cachePath" = "cache",
+                  "codePath" = "code",
+                  "dataPath" = "data",
+                  "figPath" = "figures",
+                  "outputsPath" = "outputs")
+lapply(projPaths, dir.create, recursive = TRUE, showWarnings = FALSE)
+
+## set R main library to project library
+.libPaths(projPaths$pkgPath)
+```
+
+
+Here, I use `Require` to install all necessary packages. Although not used here,
+`Require` can install a mix of CRAN and GitHub packages, and accepts specification 
+of minimum package versions (see `?Require`)
+
+```{r installPkgs}
+## install specific versions of packages
+if (packageVersion("Require") < "0.3.0") {
+  packageURL <- "https://cran.r-project.org/src/contrib/Archive/Require/Require_0.3.0.tar.gz"
+  install.packages(packageURL, repos=NULL, type="source", dependencies = TRUE)
+}
+
+library(Require)
+
+## this may take a while.
+## Notes for Windows users: failure occurs often because the OS can "hold" on to folders.
+##    Don't despair. Restart R session, close all other sessions and run the script up to
+##    this point again.
+loadOut <- Require(c("data.table", "dismo",
+                     "ggplot2", "httr", "maps",
+                     "randomForest",
+                     "rasterVis", "reproducible", 
+                     "terra"),
+                   standAlone = TRUE)
+
+## eventually we would save the library state in a package snapshot file
+# pkgSnapshotFile <- file.path(projPaths$pkgPath, "pkgSnapshot.txt")
+# pkgSnapshot(
+#   packageVersionFile = file.path(projPaths$pkgPath, "pkgSnapshot.txt"),
+#   libPaths = projPaths$pkgPath, standAlone = TRUE
+# )
+## and replace the above Require() call with
+# Require(packageVersionFile = pkgSnapshotFile, libPaths = projPaths$pkgPath)
+
+## setup
+source(file.path(projPaths$codePath, "miscFuns.R"))
+source(file.path(projPaths$codePath, "setup.R"))
+
+## download data
+source(file.path(projPaths$codePath, "climateData.R"))
+source(file.path(projPaths$codePath, "speciesData.R"))
+
+## fit SDM
+source(file.path(projPaths$codePath, "fitSDM.R"))
+
+## obtain projections
+source(file.path(projPaths$codePath, "projections.R"))
+```
