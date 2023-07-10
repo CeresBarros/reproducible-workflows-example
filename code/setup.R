@@ -19,7 +19,6 @@ file.copy(from = maxentFile$targetFilePath,
 canada <- prepInputs(url = "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lpr_000b21a_e.zip",
                      destinationPath = projPaths$dataPath)
 studyArea <- canada[canada$PRENAME == "British Columbia",]
-studyArea <- vect(studyArea)   ## convert to SpatVector
 studyArea <- aggregate(studyArea, by = "PRENAME")
 
 ## rasterize
