@@ -27,7 +27,7 @@ sdmData <- merge(climateDT, sppAbundanceDT[, .(cell, sppAbund, year)],
                  by = c("cell", "year"), all = TRUE)
 setnames(sdmData, "sppAbund", "presAbs")
 
-predVars <- setdiff(names(trainData), c("cell", "x","y", "year", "presAbs"))
+predVars <- setdiff(names(sdmData), c("cell", "x","y", "year", "presAbs"))
 fittingYear <- min(sdmData$year)   ## first year is the baseline
 
 ## fit SDM ------------------------------------------------------------------
