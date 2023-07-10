@@ -140,13 +140,20 @@ library(Require)
 #                    standAlone = TRUE)
 
 ## eventually we would save the library state in a package snapshot file
-# pkgSnapshotFile <- file.path(projPaths$pkgPath, "pkgSnapshot.txt")
+pkgSnapshotFile <- file.path(projPaths$pkgPath, "pkgSnapshot.txt")
 # pkgSnapshot(
 #   packageVersionFile = file.path(projPaths$pkgPath, "pkgSnapshot.txt"),
 #   libPaths = projPaths$pkgPath, standAlone = TRUE
 # )
 ## and replace the above Require() call with
 Require(packageVersionFile = pkgSnapshotFile, libPaths = projPaths$pkgPath)
+Require(c("data.table", "dismo",
+          "ggplot2", "httr", "maps",
+          "randomForest",
+          "rasterVis", "reproducible",
+          "terra"),
+        install = FALSE)
+
 
 ## setup
 source(file.path(projPaths$codePath, "miscFuns.R"))
