@@ -15,4 +15,4 @@ tempRas <- rast(res = 1000, crs = crs(studyArea, proj = TRUE), extent = ext(stud
 studyAreaRas <- rasterize(studyArea, tempRas)
 plot(studyAreaRas)
 
-rm(tempRas)
+rm(tempRas, studyArea)
