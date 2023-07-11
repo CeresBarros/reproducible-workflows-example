@@ -2,28 +2,36 @@
 ## FIT SDM
 
 ## assertions and preparatory steps -----------------------------------------
-if (!identical(sort(names(sppAbundanceDT)), sort(c("cell", "x", "y", "sppAbund", "year")))) {
-  stop(paste("sppAbundanceDT can only have the following columns before fitting the SDM:\n",
+if (!exists("climateDT")) {
+  stop("climateDT is missing. Please run 'climateData.R'.")
+}
+
+if (!exists("sppDataDT")) {
+  stop("sppDataDT is missing. Please run 'climateData.R'.")
+}
+
+if (!identical(sort(names(sppDataDT)), sort(c("cell", "x", "y", "sppAbund", "year")))) {
+  stop(paste("sppDataDT can only have the following columns before fitting the SDM:\n",
              paste(c("cell", "x", "y", "sppAbund", "year"), collapse = ", ")))
 }
 
-if (length(setdiff(climateDT$cell, sppAbundanceDT$cell)) > 0 ||
-    length(setdiff(sppAbundanceDT$cell, climateDT$cell)) > 0) {
+if (length(setdiff(climateDT$cell, sppDataDT$cell)) > 0 ||
+    length(setdiff(sppDataDT$cell, climateDT$cell)) > 0) {
   warning("Species and climate data differ in cell IDs with data. This could be due to post re-projection mismatches")
 }
 
 ## a few data cleaning steps to make sure we have presences and absences:
-if (min(range(sppAbundanceDT$sppAbund)) < 0) {
-  sppAbundanceDT[sppAbund < 0, sppAbund := 0]
+if (min(range(sppDataDT$sppAbund)) < 0) {
+  sppDataDT[sppAbund < 0, sppAbund := 0]
 }
 
-if (!all(unique(sppAbundanceDT$sppAbund) %in% c(0,1))) {
+if (!all(unique(sppDataDT$sppAbund) %in% c(0,1))) {
   message("Species data is not binary. Converting to presence/absence")
-  sppAbundanceDT[sppAbund > 0, sppAbund := 1]
+  sppDataDT[sppAbund > 0, sppAbund := 1]
 }
 
 ## join the two datasets - note that there are no input species abundances beyond year 1
-sdmData <- merge(climateDT, sppAbundanceDT[, .(cell, sppAbund, year)],
+sdmData <- merge(climateDT, sppDataDT[, .(cell, sppAbund, year)],
                  by = c("cell", "year"), all = TRUE)
 setnames(sdmData, "sppAbund", "presAbs")
 
