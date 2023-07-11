@@ -1,46 +1,74 @@
 ## ---------------------------------------------------------------------
 ## Plotting functions
 
-#' Function used to plot SpatRaster
+#' Plot a `SpatRaster` as a `ggplot`
 #'
-#' To be used with Plots
 #'
 #' @param ras a SpatRaster layer
 #' @param title character. Plot title
 #' @param xlab character. X-axis title
 #' @param ylab character. Y-axis title
+#' @param isDiscrete logical. Should raster data be treated as discrete
+#'   or continuous for plotting? If `TRUE` plots will be accompanied with
+#'   a colour legend and only existing values. Otherwise, a continuous
+#'   colourbar is shown (default).
+#'
+#' @return a `ggplot`.
 #'
 #' @importFrom rasterVis gplot
 #' @importFrom ggplot2 geom_tile scale_fill_brewer coord_equal theme_bw
-plotSpatRaster <- function(ras, plotTitle = "", xlab = "x", ylab = "y") {
-  gplot(ras) +
-    geom_tile(aes(fill = value)) +
-    scale_fill_distiller(palette = "Blues", direction = 1,
-                         na.value = "grey90", limits = c(0,1) ) +
+plotSpatRaster <- function(ras, plotTitle = "", xlab = "x", ylab = "y", isDiscrete = FALSE) {
+  plotOut <- gplot(ras) +
+    geom_tile(aes(fill = value))
+  plotOut <- if (isDiscrete) {
+    vals <- na.omit(unique(as.vector(plotOut[])))
+    plotOut +
+      scale_fill_distiller(palette = "Blues", direction = 1,
+                           na.value = "grey90", guide = "legend",
+                           breaks = vals, limits = vals)
+  } else {
+    plotOut +
+      scale_fill_distiller(palette = "Blues", direction = 1, na.value = "grey90")
+  }
+  plotOut <- plotOut +
     theme_classic() +
     coord_equal() +
-    labs(title = plotTitle, x = xlab, y = ylab)
+    labs(title = plotTitle, x = xlab, y = ylab, fill = "")
 }
 
-#' Function used to plot SpatRaster Stacks
-#'
-#' To be used with Plots
+#' Plot a `SpatRaster` stack as a `ggplot`
 #'
 #' @param stk a SpatRaster stack.
 #' @param title character. Plot title
 #' @param xlab character. X-axis title
 #' @param ylab character. Y-axis title
+#' @param isDiscrete logical. Should raster data be treated as discrete
+#'   or continuous for plotting? If `TRUE` plots will be accompanied with
+#'   a colour legend and only existing values. Otherwise, a continuous
+#'   colourbar is shown (default).
+#'
+#' @return a `ggplot`.
 #'
 #' @importFrom rasterVis gplot
 #' @importFrom ggplot geom_tile facet_wrap scale_fill_brewer coord_equal
-plotSpatRasterStk <-  function(stk, plotTitle = "", xlab = "x", ylab = "y") {
-  gplot(stk) +
-    geom_tile(aes(fill = value)) +
-    scale_fill_distiller(palette = "Blues", direction = 1, na.value = "grey90") +
+plotSpatRasterStk <-  function(stk, plotTitle = "", xlab = "x", ylab = "y", isDiscrete = FALSE) {
+  plotOut <- gplot(stk) +
+    geom_tile(aes(fill = value))
+  plotOut <- if (isDiscrete) {
+    vals <- na.omit(unique(as.vector(stk[])))
+    plotOut +
+      scale_fill_distiller(palette = "Blues", direction = 1,
+                           na.value = "grey90", guide = "legend",
+                           breaks = vals, limits = vals)
+  } else {
+    plotOut +
+      scale_fill_distiller(palette = "Blues", direction = 1, na.value = "grey90")
+  }
+  plotOut +
     theme_classic() +
     coord_equal() +
     facet_wrap(~ variable) +
-    labs(title = plotTitle, x = xlab, y = ylab)
+    labs(title = plotTitle, x = xlab, y = ylab, fill = "")
 }
 
 
