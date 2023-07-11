@@ -21,7 +21,7 @@ plotSpatRaster <- function(ras, plotTitle = "", xlab = "x", ylab = "y", isDiscre
   plotOut <- gplot(ras) +
     geom_tile(aes(fill = value))
   plotOut <- if (isDiscrete) {
-    vals <- na.omit(unique(as.vector(plotOut[])))
+    vals <- na.omit(unique(as.vector(ras[])))
     plotOut +
       scale_fill_distiller(palette = "Blues", direction = 1,
                            na.value = "grey90", guide = "legend",
@@ -30,7 +30,7 @@ plotSpatRaster <- function(ras, plotTitle = "", xlab = "x", ylab = "y", isDiscre
     plotOut +
       scale_fill_distiller(palette = "Blues", direction = 1, na.value = "grey90")
   }
-  plotOut <- plotOut +
+  plotOut +
     theme_classic() +
     coord_equal() +
     labs(title = plotTitle, x = xlab, y = ylab, fill = "")
