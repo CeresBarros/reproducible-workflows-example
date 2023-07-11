@@ -1,0 +1,64 @@
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+      - development
+  push:
+    branches:
+      - main
+      - master
+      - development
+    paths:
+      - .github/workflows/render-rmd.yaml
+      - global.Rmd
+
+name: Render module Rmd
+
+jobs:
+  render:
+    if: "!contains(github.event.commits[0].message, '[skip-ci]')"
+    name: Render Rmd
+    runs-on: ubuntu-20.04
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+          Ncpus: 2
+
+      - name: Install additional system dependencies
+        run: |
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libgit2-dev \
+            libglpk-dev \
+            libmagick++-dev \
+            libproj-dev \
+            libudunits2-dev \
+            libxml2-dev \
+            python3-gdal
+
+      - name: Render Rmd
+        run: |
+          isGHA <- TRUE
+          rmarkdown::render("global.Rmd", encoding = "UTF-8")
+        shell: Rscript {0}
+
+      - name: Commit results
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add global.html
+          git add global.md
+          git commit -m 'Re-build global.Rmd' || echo "No changes to commit"
+          git push https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:${{github.ref}} || echo "No changes to commit"
