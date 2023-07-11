@@ -151,3 +151,4 @@ Map(var = climVars,
     MoreArgs = list(climateRas = c(baselineClimateRas, projClimateRas)),
     f = plotClimateRas)
 
+rm(baselineClimateURLs, projClimateURLs)
