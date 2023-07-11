@@ -30,5 +30,12 @@ sppDataDT <- as.data.table(as.data.frame(sppDataRas, xy = TRUE, cells = TRUE))
 sppDataDT[, year := as.integer(sub("year_", "", names(sppDataRas)))]
 setnames(sppDataDT, names(sppDataRas), "sppAbund")
 
+## plot
+png(filename = file.path(projPaths$figPath, "sppData.png"),
+    bg = "white", width = 5, height = 7, units = "in", res = 300)
+plotSpatRaster(sppDataRas, plotTitle = "White spruce - input data",
+               xlab = "Longitude", ylab = "Latitude")
+dev.off()
+
 rm(sppAbundURL)
 gc(reset = TRUE)
