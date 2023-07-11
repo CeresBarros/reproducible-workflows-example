@@ -64,5 +64,21 @@ rfEval <- Cache(evaluate,
 message("Done!")
 print(rfEval)
 
+## baseline projection
+basineProjRas <- Cache(SDMproj,
+                       yr = 2010,
+                       predVars = predVars,
+                       model = rfOut,
+                       data = sdmData,
+                       studyAreaRas = studyAreaRas,
+                       cachePath = projPaths$cachePath)
+
+png(filename = file.path(projPaths$figPath, "SDMprojections_baseline.png"),
+    bg = "white", width = 5, height = 7, units = "in", res = 300)
+plotSpatRaster(basineProjRas, plotTitle = "White spruce - baseline projection",
+               xlab = "Longitude", ylab = "Latitude", isDiscrete = TRUE)
+dev.off()
+
+
 ## clear environment of unnecessary objects
 rm(dataForFitting, predVals, presIDs, absIDs, cols)
