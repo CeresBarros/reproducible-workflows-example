@@ -171,6 +171,9 @@ installation (ll. 146-151) and saving of the snapshot file (ll. 155-158)
 -- commented to avoid unintended package/snapshot updates during
 subsequent runs -- and package installation using the snapshot file.
 
+//!\\ You will need an active internet connection to run (or re-run) the
+package installation lines //!\\
+
 ```{r installPkgs}
 ## install specific versions of packages
 installRequire <- !"Require" %in% rownames(installed.packages())
@@ -316,12 +319,13 @@ The scripts `fitSDM.R` and `projections.R` respectively fit and use a
 random forest (RF) model that relates baseline (from 2011) white spruce
 presences and absences (derived from the input percent cover raster
 layer) to the four bioclimatic variables. The model is fit on 80% of the
-data and tested on the remaining 20%. I used tools from the `dismo`
-package to create the training and testing data partitions, to evaluate
-the model and to predict changes in white spruce distributions under
-projected climate conditions for 2030, 2050, 2070 and 2090. I also used
-`Cache` again to avoid refitting and re-evaluating the model if inputs
-are not changed.
+data and tested on the remaining 20% -- note the use of `set.seed()` to
+ensure that the data partitioning is repeatable. I used tools from the
+`dismo` package to create the training and testing data partitions, to
+evaluate the model and to predict changes in white spruce distributions
+under projected climate conditions for 2030, 2050, 2070 and 2090. I also
+used `Cache` again to avoid refitting and re-evaluating the model if
+inputs are not changed.
 
 #### Outputs
 
