@@ -126,7 +126,7 @@ To demonstrate this, and because it is an essential piece of workflow reproducib
 
 /!\\ You will need an active internet connection to run (or re-run) the package installation lines /!\\
 
-```{r installPkgs}
+```{r installPkgs, eval = FALSE}
 ## install specific versions of packages
 installRequire <- !"Require" %in% rownames(installed.packages())
 installRequire <- if (!installRequire) packageVersion("Require") < "0.3.0" else installRequire
@@ -166,6 +166,15 @@ Require(c("data.table", "dismo",
         install = FALSE)
 ```
 
+```{r installPkgs-GHA}
+loadOut <- Require(c("data.table", "dismo",
+                     "ggplot2", "httr", "maps",
+                     "randomForest",
+                     "rasterVis", "reproducible",
+                     "terra"),
+                   standAlone = TRUE)
+```
+
 In some Windows machines the package installation lines above may have to be run multiple times, with `R` session "refreshes" between them. This is because, Windows often "holds on" to temporary folders created during package installation, preventing `R` from manipulating these folders and causing installation failures. I'm afraid you'll simply have to be patient here.
 
 ### Running the workflow
@@ -174,10 +183,29 @@ The workflow presented here is relatively simple. It has been broken down into a
 
 <!-- todo: try to execute code below in GH actions with a study SA-->
 
-```{r workflow}
+```{r workflow eval = FALSE}
 ## workflow functions/options and study area 
 source(file.path(projPaths$codePath, "miscFuns.R"))
 source(file.path(projPaths$codePath, "setup.R"))
+
+## download data
+source(file.path(projPaths$codePath, "climateData.R"))
+source(file.path(projPaths$codePath, "speciesData.R"))
+
+## fit SDM
+source(file.path(projPaths$codePath, "fitSDM.R"))
+
+## obtain projections
+source(file.path(projPaths$codePath, "projections.R"))
+```
+
+```{r workflow-GHA, echo = FALSE}
+## workflow functions/options and study area 
+source(file.path(projPaths$codePath, "miscFuns.R"))
+source(file.path(projPaths$codePath, "setup.R"))
+
+## decrease resolution for faster computations
+studyAreaRas <- aggregate(studyAreaRas, fact = 10)
 
 ## download data
 source(file.path(projPaths$codePath, "climateData.R"))
