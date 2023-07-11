@@ -182,8 +182,6 @@ In some Windows machines the package installation lines above may have to be run
 
 The workflow presented here is relatively simple. It has been broken down into a series of `.R` scripts sourced in sequence. In the past, I found this to be the most intuitive way of learning how to shift from my spaghetti code into something structured and more robust. However, there are many other ways in which the workflow could have been set up. For instance, each of the scripts could be turned into a function and the functions called here; or packages like `SpaDES` and `targets` could be used to set and manage the workflow (see [The workflow at a glance]). The choice will depend on project complexity and on the level of programming proficiency of the developer, among other factors.
 
-<!-- todo: try to execute code below in GH actions with a study SA-->
-
 ```{r workflow, eval = FALSE}
 ## workflow functions/options and study area 
 source(file.path(projPaths$codePath, "miscFuns.R"))
