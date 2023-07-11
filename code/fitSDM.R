@@ -90,7 +90,7 @@ dev.off()
 ## save outputs
 saveRDS(rfOut, file.path(projPaths$outputsPath, "RFmodel.rds"))
 
-sink(file.path(projPaths$outputPaths, "RFmodel_eval.txt"))
+sink(file.path(projPaths$outputsPath, "RFmodel_eval.txt"))
 rfEval
 sink()
 
