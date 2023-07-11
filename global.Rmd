@@ -7,9 +7,7 @@ output:
     toc: true
     toc_float: true
     toc_depth: 4
-    theme: 
-      light: minty
-      dark: minty
+    theme: darkly
     number_sections: false
     df_print: paged
     keep_md: yes
@@ -183,7 +181,7 @@ The workflow presented here is relatively simple. It has been broken down into a
 
 <!-- todo: try to execute code below in GH actions with a study SA-->
 
-```{r workflow eval = FALSE}
+```{r workflow, eval = FALSE}
 ## workflow functions/options and study area 
 source(file.path(projPaths$codePath, "miscFuns.R"))
 source(file.path(projPaths$codePath, "setup.R"))
