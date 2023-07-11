@@ -48,7 +48,10 @@ if (length(unique(baselineClimateURLs$year)) != 1) {
   stop(paste("'baselineClimateURLs' should all have the same 'year' value,",
              "corresponding to the first year of the simulation"))
 }
-## download data - prepInputs does all the heavy-lifting of dowloading and pre-processing the layer and caches.
+
+## download and prep. data
+## prepInputs does all the heavy-lifting of downloading and pre-processing the layer
+## (crops and reprojects input data layer to match studyAreaRas) and caches operations
 baselineClimateRas <- Cache(Map,
                             f = prepInputs,
                             url = baselineClimateURLs$URL,

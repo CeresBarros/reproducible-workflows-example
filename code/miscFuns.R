@@ -113,6 +113,8 @@ plotClimateRas <- function(var, climateRas, figFile = paste0(var, ".png")){
 #'
 #' @return a `SpatRaster` with the same properties as `studyAreaRas`
 #' @export
+#'
+#' @importFrom dismo predict
 SDMproj <- function(yr, predVars, data, model, studyAreaRas) {
   data2 <- data[year == yr]
 

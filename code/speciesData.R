@@ -6,11 +6,15 @@ if (!exists("studyAreaRas")) {
   stop("Please supply a 'studyAreaRas' SpatRaster")
 }
 
+## download and prepare data
 sppAbundURL <- paste0("https://ftp.maps.canada.ca/pub/nrcan_rncan/Forests_Foret/",
                       "canada-forests-attributes_attributs-forests-canada/",
                       "2011-attributes_attributs-2011/",
                       "NFI_MODIS250m_2011_kNN_Species_Pice_Gla_v1.tif")
 sppAbundanceRas <- Cache(prepInputs,
+## download and prep. data
+## prepInputs does all the heavy-lifting of downloading and pre-processing the layer
+## (crops and reprojects input data layer to match studyAreaRas) and caches operations
                          targetFile = basename(sppAbundURL),
                          url = sppAbundURL,
                          to = studyAreaRas,
