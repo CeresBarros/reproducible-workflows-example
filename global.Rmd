@@ -166,6 +166,8 @@ Require(c("data.table", "dismo",
 ```
 
 ```{r installPkgs-GHA}
+install.packages("Require", dependencies = TRUE)
+library(Require)
 loadOut <- Require(c("data.table", "dismo",
                      "ggplot2", "httr", "maps",
                      "randomForest",
