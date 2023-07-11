@@ -44,6 +44,7 @@ dataForFitting <- sdmData[year == fittingYear]
 dataForFitting <- dataForFitting[complete.cases(dataForFitting)]
 
 ## break data into training and testing subsets
+set.seed(123)
 group <- kfold(dataForFitting, 5)
 ## save the the split datasets as internal objects to this module
 trainData <- dataForFitting[group != 1, ]
