@@ -48,6 +48,8 @@ jobs:
             libxml2-dev \
             python3-gdal
 
+      - uses: PredictiveEcology/actions/install-Rmd-pkgs@v0
+
       - name: Render Rmd
         run: |
           isGHA <- TRUE
