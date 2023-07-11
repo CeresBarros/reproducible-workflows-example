@@ -1,14 +1,23 @@
 ---
-title: "Untitled"
+title: "Example of a reproducible workflow in R"
 author: "Ceres Barros"
-date: "2023-07-09"
-output: html_document
-keep-md: true
-editor_options: 
+date: "Last edited: `r format(Sys.Date(), '%d %b %Y')`"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: 
+      light: minty
+      dark: minty
+    number_sections: false
+    df_print: paged
+    keep_md: yes
+editor_options:
   chunk_output_type: console
-  markdown: 
-    wrap: 72
 bibliography: references.bib
+link-citations: true
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
