@@ -120,8 +120,11 @@ SDMproj <- function(yr, predVars, data, model, studyAreaRas) {
     stop(paste("No data for year", yr, "provided to calculate predictions"))
   }
 
-  preds <- predict(model, as.data.frame(data2[, ..predVars]),
-                   progress = '')
+  cols <- c(predVars, "cell")
+  data2 <- as.data.frame(data2[, ..cols])
+  data2 <- data2[complete.cases(data2),]
+
+  preds <- predict(model, data2, progress = '')
   studyAreaRas[data2$cell] <- as.numeric(as.character(preds))
   names(studyAreaRas) <- paste0("year", yr)
 
