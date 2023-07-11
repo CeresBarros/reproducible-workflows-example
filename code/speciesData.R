@@ -29,3 +29,5 @@ sppAbundanceDT <- as.data.table(as.data.frame(sppAbundanceRas, xy = TRUE, cells 
 sppAbundanceDT[, year := as.integer(sub("year_", "", names(sppAbundanceRas)))]
 setnames(sppAbundanceDT, names(sppAbundanceRas), "sppAbund")
 
+rm(sppAbundURL)
+gc(reset = TRUE)

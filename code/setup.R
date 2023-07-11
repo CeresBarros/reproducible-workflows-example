@@ -16,3 +16,4 @@ studyAreaRas <- rasterize(studyArea, tempRas)
 plot(studyAreaRas)
 
 rm(tempRas, studyArea)
+gc(reset = TRUE)

@@ -82,3 +82,4 @@ dev.off()
 
 ## clear environment of unnecessary objects
 rm(dataForFitting, predVals, presIDs, absIDs, cols)
+gc(reset = TRUE)

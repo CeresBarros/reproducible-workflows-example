@@ -152,3 +152,4 @@ Map(var = climVars,
     f = plotClimateRas)
 
 rm(baselineClimateURLs, projClimateURLs)
+gc(reset = TRUE)
