@@ -124,7 +124,7 @@ Another advantage of using `Require` is that it can save a "package snapshot" (i
 
 To demonstrate this, and because it is an essential piece of workflow reproducibility, the code below shows both the initial package installation (ll. 146-151) and saving of the snapshot file (ll. 155-158) -- commented to avoid unintended package/snapshot updates during subsequent runs -- and package installation using the snapshot file.
 
-/!\\\\ You will need an active internet connection to run (or re-run) the package installation lines /!\\\\
+/!\\ You will need an active internet connection to run (or re-run) the package installation lines /!\\
 
 ```{r installPkgs}
 ## install specific versions of packages
