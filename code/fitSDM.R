@@ -65,4 +65,4 @@ message("Done!")
 print(rfEval)
 
 ## clear environment of unnecessary objects
-rm(dataForFitting, fittingYear, predVals, presIDs, absIDs, cols)
+rm(dataForFitting, predVals, presIDs, absIDs, cols)
