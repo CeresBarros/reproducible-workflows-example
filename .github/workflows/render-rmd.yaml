@@ -48,6 +48,10 @@ jobs:
             libxml2-dev \
             python3-gdal
 
+      - uses: PredictiveEcology/actions/install-Require@v0
+        with:
+          GitTag: '55ec169e654214d86be62a0e13e9a2157f1aa966'
+
       - uses: PredictiveEcology/actions/install-Rmd-pkgs@v0
 
       - name: Render Rmd
