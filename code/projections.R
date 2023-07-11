@@ -4,11 +4,11 @@
 futureYears <- setdiff(sdmData$year, fittingYear)
 
 futureProjStk <- Map(yr = futureYears,
-               MoreArgs = list(predVars = predVars,
-                               data = sdmData,
-                               model = rfOut,
-                               studyAreaRas = studyAreaRas),
-               f = SDMproj) |>
+                     MoreArgs = list(predVars = predVars,
+                                     data = sdmData,
+                                     model = rfOut,
+                                     studyAreaRas = studyAreaRas),
+                     f = SDMproj) |>
   rast()
 
 png(filename = file.path(projPaths$figPath, "SDMprojections_future.png"),

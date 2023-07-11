@@ -3,11 +3,11 @@ title: "Example of a reproducible workflow in R"
 author: "Ceres Barros"
 date: "Last edited: `r format(Sys.Date(), '%d %b %Y')`"
 output:
-  bookdown::html_document2:
+  bookdown::html_document2:  
     toc: true
     toc_float: true
     toc_depth: 4
-    theme: darkly
+    theme: sandstone
     number_sections: false
     df_print: paged
     keep_md: yes
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, cache = 2, eval = isGHA)
 
 Repeatable, Reproducible, Reusable and Transparent ($R^3$T) workflows are becoming more and more commonly used in academic and non-academic settings to ensure that analyses and their outputs can be verified and repeated by peers, stakeholders and even the public. As such, ($R^3$T) promote trust within the scientific community and between scientists, stakeholders, end-users and the public. $R^3$T are also fundamental for model benchmarking, conducting meta-analyses and facilitating building-on and improving current scientific methods, especially those involving statistical and non-statistical modelling.
 
-In the ecological domain, $R^3$T are gaining traction, but many of us struggle at the start, not knowing where to begin. This example will take you through settiing up an $R^3$T workflow for a common analysis in ecology, species distribution modelling.
+In the ecological domain, $R^3$T are gaining traction, but many of us struggle at the start, not knowing where to begin. This example will take you through setting up an $R^3$T workflow for a common analysis in ecology, species distribution modelling.
 
 The workflow has been kept as simple as possible, while following a few common guidelines that facilitate building $R^3$T workflows:
 
@@ -156,6 +156,7 @@ Require(packageVersionFile = pkgSnapshotFile,
         standAlone = TRUE,
         libPaths = projPaths$pkgPath,
         upgrade = FALSE, require = FALSE)
+
 Require(c("data.table", "dismo",
           "ggplot2", "httr", "maps",
           "randomForest",
@@ -258,8 +259,19 @@ The scripts `fitSDM.R` and `projections.R` respectively fit and use a random for
 
 The workflow's outputs are the RF model object, its evaluation results and plots of the raster layer projections. Instead of creating a separate script to save outputs to disk, I have embedded these operations within each script. I prefer saving outputs as they are being created, but in this case this is more a matter of personal taste. In very long workflows, however, it is advisable to save outputs as they are created to avoid losing work should there be a failure preventing workflow completion.
 
+```{r fig-baselineproj, eval = TRUE, echo = FALSE, fig.height = 4, fig.width = 4, fig.cap = "Random forest projections of white spruce distributions in BC, Canada, under baseline conditions of four bioclimatic variables (annual mean temperature and annual precipitation, temperature and precipitation seasonality."}
+knitr::include_graphics("figures/SDMprojections_baseline.png")
+```
+
+```{r fig-futureproj, eval = TRUE, echo = FALSE, fig.height = 4, fig.width = 4, fig.cap="Random forest projections of white spruce distributions in BC, Canada, for future values of the same four bioclimatic variables -- only one GCM and one emissions scenario were used."}
+knitr::include_graphics(rep("figures/SDMprojections_future.png"))
+```
+
 #### And voilà!
 
 That's it! I now invite you to make further changes to the workflow. Some ideas are to make it so that you can control inputs from the main script, turning the existing scripts into functions or using other workflow structures and packages like `SpaDES` and `targets`, which are beyond the scope of this example [but see [SpaDES4Dummies guide](https://ceresbarros.github.io/SpaDES4Dummies/index.html) and @brousil2023].
 
 I hope this minimal example has given useful tools and ideas that will help you create $R^3$T workflows and enhance your existing work with these principles.
+
+
+## References
