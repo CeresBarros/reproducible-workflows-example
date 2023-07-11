@@ -1,14 +1,15 @@
 ## --------------------------------------------------------------------------
 ## SOURCE AND PREP. CLIMATE DATA
 
-
 ## code check: does the study area exist?
 if (!exists("studyAreaRas")) {
   stop("Please supply a 'studyAreaRas' SpatRaster")
 }
 
+climVars <- c("BIO1", "BIO4", "BIO12", "BIO15")
+
 baselineClimateURLs <- data.table(
-  vars = c("BIO1", "BIO4", "BIO12", "BIO15"),
+  vars = climVars,
   URL = c("https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip",
           "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip",
           "https://biogeo.ucdavis.edu/data/worldclim/v2.1/base/wc2.1_2.5m_bio.zip",
@@ -19,7 +20,7 @@ baselineClimateURLs <- data.table(
 )
 
 projClimateURLs <- data.table(
-  vars = rep(c("BIO1", "BIO4", "BIO12", "BIO15"), times = 4),
+  vars = rep(climVars, times = 4),
   URL = rep(c("https://geodata.ucdavis.edu/cmip6/2.5m/CanESM5/ssp585/wc2.1_2.5m_bioc_CanESM5_ssp585_2021-2040.tif",
               "https://geodata.ucdavis.edu/cmip6/2.5m/CanESM5/ssp585/wc2.1_2.5m_bioc_CanESM5_ssp585_2041-2060.tif",
               "https://geodata.ucdavis.edu/cmip6/2.5m/CanESM5/ssp585/wc2.1_2.5m_bioc_CanESM5_ssp585_2061-2080.tif",
@@ -140,3 +141,10 @@ if (!compareGeom(baselineClimateRas, projClimateRas, res = TRUE, stopOnError = F
 
 ## now bind
 climateDT <- rbindlist(list(baselineClimateData, projClimateData), use.names = TRUE)
+
+## plots
+Map(var = climVars,
+    figFile = file.path(projPaths$figPath, paste0(climVars, ".png")),
+    MoreArgs = list(climateRas = c(baselineClimateRas, projClimateRas)),
+    f = plotClimateRas)
+

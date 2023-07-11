@@ -72,6 +72,32 @@ plotSpatRasterStk <-  function(stk, plotTitle = "", xlab = "x", ylab = "y", isDi
 }
 
 
+#' Title
+#'
+#' @param var character. Climate variable layers to search in
+#'   `names(projClimateRas)` and subset.
+#' @param projClimateRas SpatRaster. Named tack of climate layers
+#'   where names follow the form "^var_"
+#' @param figFile character. Path to figure file to save.
+#'   Must be .png
+#'
+#' @return NULL. Saves SpatRaster plots to `figFile`
+#' @export
+plotClimateRas <- function(var, climateRas, figFile = paste0(var, ".png")){
+  ## subset variable layers
+  var2 <- paste0("^", var, "_")
+  climateRas <- climateRas[[grep(var2, names(climateRas))]]
+
+  ## keep only years in layer names
+  names(climateRas) <- sub(var2, "", names(climateRas))
+  png(filename = figFile, bg = "white", width = 5, height = 7,
+      units = "in", res = 300)
+  plotSpatRasterStk(climateRas, plotTitle = var,
+                    xlab = "Longitude", ylab = "Latitude") |>
+    print()
+  dev.off()
+}
+
 ## ---------------------------------------------------------------------
 ## ANALYSIS FUNCTIONS
 
