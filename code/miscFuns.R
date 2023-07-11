@@ -75,7 +75,7 @@ plotSpatRasterStk <-  function(stk, plotTitle = "", xlab = "x", ylab = "y", isDi
 ## ---------------------------------------------------------------------
 ## ANALYSIS FUNCTIONS
 
-#' Title
+#' Project species distributions to a `SpatRaster`
 #'
 #' @param yr year value to subset in `data$year`
 #' @param predVars character. Names of predictor columns in `data`
@@ -85,10 +85,8 @@ plotSpatRasterStk <-  function(stk, plotTitle = "", xlab = "x", ylab = "y", isDi
 #' @param studyAreaRas a `SpatRaster` of the study area whose cell IDs correspond
 #'   to `data$cell`.
 #'
-#' @return
+#' @return a `SpatRaster` with the same properties as `studyAreaRas`
 #' @export
-#'
-#' @examples
 SDMproj <- function(yr, predVars, data, model, studyAreaRas) {
   data2 <- data[year == yr]
 
@@ -100,5 +98,6 @@ SDMproj <- function(yr, predVars, data, model, studyAreaRas) {
                    progress = '')
   studyAreaRas[data2$cell] <- as.numeric(as.character(preds))
   names(studyAreaRas) <- paste0("year", yr)
+
   return(studyAreaRas)
 }
