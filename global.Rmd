@@ -12,8 +12,12 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
+if (!exists("isGHA")) {
+  isGHA <- FALSE
+}
 knitr::opts_knit$set(root.dir = getwd())
-knitr::opts_chunk$set(echo = TRUE, cache = 2)
+knitr::opts_chunk$set(echo = TRUE, cache = 2, eval = isGHA)
+
 ```
 
 ## Introduction
