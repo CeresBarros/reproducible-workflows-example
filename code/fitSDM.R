@@ -87,6 +87,12 @@ plotSpatRaster(basineProjRas, plotTitle = "White spruce - baseline projection",
                xlab = "Longitude", ylab = "Latitude", isDiscrete = TRUE)
 dev.off()
 
+## save outputs
+saveRDS(rfOut, file.path(projPaths$outputsPath, "RFmodel.rds"))
+
+sink(file.path(projPaths$outputPaths, "RFmodel_eval.txt"))
+rfEval
+sink()
 
 ## clear environment of unnecessary objects
 rm(dataForFitting, predVals, presIDs, absIDs, cols)
