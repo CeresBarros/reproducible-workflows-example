@@ -57,20 +57,6 @@ It also relies on two important packages that enable reproducibility and speed u
 
 However, please note that there are numerous other `R` packages (as well as other languages and types of software) that facilitate and support $R^3$T workflows. This is simply an example using some of the tools that I use when building my workflows.
 
-## An example using a (too) simple species distribution mode
-
-I was asked multiple times why I picked species distribution models (SDMs) to teach reproducible workflows in R (for ecologists). Simple, climate-based SDMs may not be great to actually forecast species distributions, due to the several other processes they are missing (e.g. dispersal limitation and biotic interactions), but they can be great for hypothesis testing [see @lee-yaw2021 for a quick overview of SDM strengths and weaknesses] and as educational tools. They are easy to understand, relatively fast to run in nowadays computes, have several R packages that make their fitting and validation easier, the data they need is often easily obtainable at large scales and have many features and requirements that are common with other ecological workflows:
-
-Need different sources of data that should be as FAIR @wilkinson2016 as possible;
-
--   Often require some degree of data preparation (e.g. GIS operations.) to put the data in the right format;
-
--   Rely on statistical steps like model fitting, model validation and running model prediction on the same or new data (be careful with climate-based SDMs and extrapolation, though...!);
-
--   Produce visual outputs (e.g. maps).
-
-My hope is that this example will can serve as a starting point for you to adapt your current workflows (regardless of what they are used for) and ground them on the $R^3$T principles .
-
 ## The workflow at a glance
 
 In this example, I use a simple statistical framework to predict climate-driven range changes of white spruce (*Picea glauca*), a common tree species in Canada. It should, by no means, be interpreted as a good way to project changes in the *actual* distributions of white spruce, which will likely involve many more drivers and ecological processes than the ones included here.l
