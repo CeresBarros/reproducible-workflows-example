@@ -3,7 +3,7 @@
 An example of a reproducible workflow based in `R` and using RStudio
 (for self-contained project management) and GitHub (for version control).
 
-[global.md]() is both the "controller" script of the workflow and a tutorial.
+[global.qmd]() is both the "controller" script of the workflow and a tutorial.
 Other sourced `R` scripts and functions are contained in the `/codes` folder.
 
 This workflow relies heavily on the `R` packages:
