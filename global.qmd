@@ -1,16 +1,20 @@
 ---
 title: "Example of a reproducible workflow in R"
 author: "Ceres Barros"
-date: "Last edited: `r format(Sys.Date(), '%d %b %Y')`"
-output:
-  bookdown::html_document2:  
+date: last-modified
+date-format: long
+format:
+  html:
     toc: true
     toc_float: true
-    toc_depth: 4
-    theme: journal
-    number_sections: false
-    df_print: paged
-    keep_md: yes
+    toc-location: left
+    toc-depth: 4
+    theme:
+      light: flatly
+      dark: darkly
+    number-sections: false
+    html-math-method: katex
+    smooth-scroll: true
 editor_options:
   chunk_output_type: console
 bibliography: references.bib
